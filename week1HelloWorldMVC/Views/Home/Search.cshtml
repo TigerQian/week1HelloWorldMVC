@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Search Results";
+    var query = ViewData["Query"] as string;
+    var results = Model as List<string>;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get" action="/Home/Search">
+    <input type="text" name="query" value="@query" placeholder="Search..." />
+    <button type="submit">Search</button>
+</form>
+
+@if (!string.IsNullOrEmpty(query))
+{
+    <h2>Results for "@query":</h2>
+    @if (results.Count == 0)
+    {
+        <p>No results found.</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var result in results)
+            {
+                <li>@result</li>
+            }
+        </ul>
+    }
+}
