@@ -47,12 +47,18 @@ namespace MvcMovie.Controllers
             return View();
         }
 
-        public IActionResult Search(string query, string genre)
+        [HttpGet]
+        public IActionResult Search(SearchViewModel model)
         {
-            var results = _sampleData.Where(m => (string.IsNullOrEmpty(query) || m.Title.Contains(query, StringComparison.OrdinalIgnoreCase)) 
-                                                 && (string.IsNullOrEmpty(genre) || m.Genre.Equals(genre, StringComparison.OrdinalIgnoreCase))).ToList();
-            ViewData["Query"] = query;
-            ViewData["Genre"] = genre;
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var results = _sampleData.Where(m => (string.IsNullOrEmpty(model.Query) || m.Title.Contains(model.Query, StringComparison.OrdinalIgnoreCase)) 
+                                                 && (string.IsNullOrEmpty(model.Genre) || m.Genre.Equals(model.Genre, StringComparison.OrdinalIgnoreCase))).ToList();
+            ViewData["Query"] = model.Query;
+            ViewData["Genre"] = model.Genre;
             return View(results);
         }
 
